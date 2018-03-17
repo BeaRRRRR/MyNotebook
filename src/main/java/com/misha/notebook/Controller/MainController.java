@@ -6,6 +6,7 @@ import com.misha.notebook.Service.NoteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,23 @@ public class MainController {
     public String deleteNote(@RequestParam Long id){
         noteService.deleteNote(id);
         return "redirect:/notebook";
+    }
+
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    public String editNote(String message,Long id){
+        if(!message.isEmpty()){
+            Note note = noteService.getNoteById(id);
+            note.setMessage(message);
+            noteService.updateNote(note);
+        }
+         return "redirect:/notebook";
+
+    }
+
+    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    public String getEditForm(@RequestParam Long id,Model model){
+        model.addAttribute("id",id);
+        return "edit";
     }
 
 }

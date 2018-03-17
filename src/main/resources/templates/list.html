@@ -10,6 +10,7 @@
             <th >Message</th>
             <th >Date</th>
             <th>Delete</th>
+            <th>Edit</th>
         </tr>
         </thead>
         <tbody>
@@ -19,6 +20,9 @@
             <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}" style="text-align: center">Date</td>
             <td>
                 <a th:href="@{/notebook/delete(id = ${note.id})}"> Delete </a>
+            </td>
+            <td>
+                <a th:href="@{/notebook/edit(id = ${note.id})}">Edit</a>
             </td>
         </tr>
         </tbody>
