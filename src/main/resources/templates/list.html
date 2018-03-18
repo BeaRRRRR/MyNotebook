@@ -5,7 +5,7 @@
 <div th:fragment="notebook_list">
     <table class="table table-bordered table-hover horizontal-align">
         <thead>
-        <tr>
+        <tr style="text-align: center">
             <th >#</th>
             <th >Message</th>
             <th >Date</th>
@@ -14,15 +14,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="note : ${notes}">
-            <td th:text="${note.id}" style="text-align: center">#</td>
-            <td th:text="${note.message}">Message</td>
-            <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}" style="text-align: center">Date</td>
+        <tr style="text-align: center" th:each="note : ${notes}">
+            <td th:text="${note.id}" >#</td>
+            <td th:text="${note.message}" style="text-align: left">Message</td>
+            <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}">Date</td>
             <td>
-                <a th:href="@{/notebook/delete(id = ${note.id})}"> Delete </a>
+                <a th:href="@{/notebook/delete(id = ${note.id})}" > Delete </a>
             </td>
             <td>
-                <a th:href="@{/notebook/edit(id = ${note.id})}">Edit</a>
+                <a th:href="@{/notebook/edit(id = ${note.id})}" >Edit</a>
             </td>
         </tr>
         </tbody>
