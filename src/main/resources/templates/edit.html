@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit</title>
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="static/css/style.css" th:href="@{/css/style.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
     <form th:action="@{/notebook/edit}" method="post">
-        <div>
-            <label>  Message : <input type="text" name = "message"/>  </label>
+        <div class="form-group col-xs-3">
+            <label for="message"> New Message : </label>
+            <input type="text" name = "message" id="message" class="form-control"/>
         </div>
-
         <div>
-            <input type="hidden" th:value="${id}" name="id"/>
+            <button type="submit" class="btn btn-outline-success">Save Changes</button>
         </div>
-
-        <div> <input type = "submit" value="Save Changes"/> </div>
     </form>
 
 </body>
