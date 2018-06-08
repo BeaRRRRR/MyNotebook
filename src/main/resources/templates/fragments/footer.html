@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+
+
+<div th:fragment="notebook_footer" class="container">
+
+    <div class="row">
+
+        <div>
+            <a  th:href="@{/notebook/add}" class="btn btn-outline-primary" role="button">Добавить заметку</a>
+        </div>
+
+        <div class="dropdown" style="margin-left: 1em">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown">Фильтровать</button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" th:href="@{/notebook/sort(method='All')}">Все дела</a>
+                <a class="dropdown-item" th:href="@{/notebook/sort(method='Date_ASC')}">От старого к новому </a>
+                <a class="dropdown-item" th:href="@{/notebook/sort(method='Date_DESC')}">От нового к старому</a>
+                <a class="dropdown-item" th:href="@{/notebook/sort(method='Done')}">Только невыполненные</a>
+                <a class="dropdown-item" th:href="@{/notebook/sort(method='Not_Done')}">Выполненные</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-top: 2em; margin-left: -1em">
+        <p><i>Количеcтво записей на странице</i></p>
+        <a th:href="@{/notebook(pagesize = 10,currentpage = ${currentPage})}">10</a>
+        <a th:href="@{/notebook(pagesize = 30,currentpage = ${currentPage})}">30</a>
+        <a th:href="@{/notebook(pagesize = 50,currentpage = ${currentPage})}">50</a>
+    </div>
+
+    <div style="margin-left: 50%">
+
+        <div th:if="${currentPage}!=null">
+            <ul class="pagination">
+                <li th:if="${currentPage}!=0" class="page-item">
+                    <a  class="page-link" th:href="@{/notebook(currentpage=(${currentPage}-1))}">Previous</a>
+                </li>
+                <li th:if="${currentPage}<=0" class="page-item disabled">
+                    <a  class="page-link" th:href="@{/notebook(currentpage=(${currentPage}-1))}">Previous</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" th:text="${currentPage}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/notebook(currentpage=(${currentPage}+1))}">Next</a>
+                </li>
+            </ul>
+
+        </div>
+
+
+
+        <div th:if="${currentPage}==null ">
+            <ul class="pagination">
+                <li  class="page-item disabled">
+                    <a  class="page-link" >Previous</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" th:text="${0}"></a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/notebook(currentpage=(1))}">Next</a>
+                </li>
+            </ul>
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

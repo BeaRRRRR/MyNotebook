@@ -17,7 +17,7 @@ public class Note {
     private Date date;
 
     @Column(name = "is_done")
-    private boolean isDone;
+    private boolean done;
 
     public Note() {
     }
@@ -25,7 +25,7 @@ public class Note {
     public Note(String message) {
         this.message = message;
         this.date = new Date();
-        this.isDone = false;
+        this.done = false;
     }
 
     public Long getId() {
@@ -53,10 +53,10 @@ public class Note {
     }
 
     public boolean isDone() {
-        return isDone;
+        return done;
     }
 
     public void setDone(boolean done) {
-        isDone = done;
+        this.done = done;
     }
 }

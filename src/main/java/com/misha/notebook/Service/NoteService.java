@@ -12,5 +12,7 @@ public interface NoteService {
     void updateNote(Note note);
     void addNote(Note note);
     void deleteNote(Long id);
-    List<Note> findAllOrOrderByDateAsc();
+    List<Note> findAllOrderByDateAsc();
+    List<Note> findByDone(boolean done);
+    List<Note> findAllOrderByDateDesc();
 }

@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&subset=cyrillic');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans&subset=cyrillic');
+
+
+.centereddiv{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+body{
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.fa-check {
+    color: #00bf00;
+}
+
+.fa-times {
+    color: #ff0000;
+}

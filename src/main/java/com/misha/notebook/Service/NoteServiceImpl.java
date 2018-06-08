@@ -3,15 +3,28 @@ package com.misha.notebook.Service;
 import com.misha.notebook.Entity.Note;
 import com.misha.notebook.Repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteServiceImpl implements NoteService{
 
     @Autowired
     private NoteRepository noteRepository;
+
+    private int pageSize,currentPage;
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
 
     @Override
     public void addNote(Note note){
@@ -24,8 +37,9 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> findAllOrOrderByDateAsc() {
-        return noteRepository.findAllByOrderByDateAsc();
+    public List<Note> findAllOrderByDateAsc() {
+        return noteRepository.findAll(new PageRequest(currentPage,pageSize, new Sort(Sort.Direction.ASC,"date"))).getContent();
+
     }
 
     @Override
@@ -35,8 +49,22 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public Note getNoteById(Long id){
-        return noteRepository.getOne(id);
+        return noteRepository.findById(id).get();
     }
+
+    @Override
+    public List<Note> findByDone(boolean done) {
+        if (done){
+            return noteRepository.findByDoneIsTrue(new PageRequest(currentPage,pageSize));
+        }
+        return noteRepository.findByDoneIsFalse(new PageRequest(currentPage,pageSize));
+    }
+
+    @Override
+    public List<Note> findAllOrderByDateDesc() {
+        return noteRepository.findAll(new PageRequest(currentPage,pageSize, new Sort(Sort.Direction.DESC,"date"))).getContent();
+    }
+
 
 
 }

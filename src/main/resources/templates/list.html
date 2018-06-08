@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <!--suppress ALL -->
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en"
+        xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="notebook_list">
     <table class="table table-bordered table-hover horizontal-align">
         <thead>
         <tr style="text-align: center">
             <th >#</th>
-            <th >Message</th>
-            <th >Date</th>
-            <th>Delete</th>
-            <th>Edit</th>
+            <th >Сообщение</th>
+            <th >Дата</th>
+            <th>Выполненно</th>
+            <th>Удалить</th>
+            <th>Изменить</th>
         </tr>
         </thead>
         <tbody>
-        <tr style="text-align: center" th:each="note : ${notes}">
+        <tr style="text-align: center" th:each="note : ${notes}" >
             <td th:text="${note.id}" >#</td>
-            <td th:text="${note.message}" style="text-align: left">Message</td>
-            <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}">Date</td>
-            <td>
-                <a th:href="@{/notebook/delete(id = ${note.id})}" class="btn btn-outline-primary" role="button" > Delete </a>
+            <td th:text="${note.message}" style="text-align: left">Сообщение</td>
+            <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}">Дата</td>
+            <td style="...">
+
+                <i> <a th:if="${note.done} == false" class="fa fa-times" style="..."
+                id="falseDone" onmouseenter="this.className = 'fa fa-check' " onmouseleave="this.className = 'fa fa-times'" th:href="@{/notebook/changeDoneToTrue(id=${note.id})}" > </a> </i>
+                <i th:if="${note.done} == true" class="fa fa-check" style="..."></i>
+
             </td>
             <td>
-                <a th:href="@{/notebook/edit(id = ${note.id})}" class="btn btn-outline-primary" role="button" >Edit</a>
+                <a th:href="@{/notebook/delete(id = ${note.id})}" class="btn btn-outline-primary" role="button" >Удалить</a>
+            </td>
+            <td>
+                <a th:href="@{/notebook/edit(id = ${note.id})}" class="btn btn-outline-primary" role="button" >Изменить</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+
 </html>

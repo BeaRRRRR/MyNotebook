@@ -6,17 +6,23 @@
     <link rel="stylesheet" href="static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" href="static/css/style.css" th:href="@{/css/style.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 
     <form th:action="@{/notebook/edit}" method="post">
         <div class="form-group col-xs-3">
-            <label for="message"> New Message : </label>
-            <input type="text" name = "message" id="message" class="form-control"/>
+            <label for="message"> Новое сообщение : </label>
+            <input type="text" name = "message" id="message" class="form-control" th:value="*{oldMessage}"/>
+            <input type="hidden" name="id" th:name="id" th:value="*{id}"/>
+            <label for="done"> Выполненно? </label>
+            <input type="checkbox" name="done" id="done"/>
+            <div>
+                <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
+            </div>
         </div>
-        <div>
-            <button type="submit" class="btn btn-outline-success">Save Changes</button>
-        </div>
+
+
     </form>
 
 </body>
