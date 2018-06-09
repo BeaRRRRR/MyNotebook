@@ -49,7 +49,7 @@ public class MainController {
         if(pageSize!=null) this.pageSize = pageSize;
         if (currentPage!=null) this.currentPage = currentPage;;
         List<Note> notes = sort(this.filterMethod,this.sortMethod);
-        boolean isActive = notes.size()-(this.pageSize*(this.currentPage+1)) >= 0;
+        boolean isActive = notes.size()-this.pageSize >= 0;
         model.addAttribute("notes",notes);
         model.addAttribute("currentPage",currentPage);
         model.addAttribute("isActive",isActive);
