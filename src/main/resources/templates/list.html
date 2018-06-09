@@ -22,8 +22,7 @@
             <td th:text="${#dates.format(note.date, 'EEE, d MMM yyyy HH:mm')}">Дата</td>
             <td style="...">
 
-                <i> <a th:if="${note.done} == false" class="fa fa-times" style="..."
-                id="falseDone" onmouseenter="this.className = 'fa fa-check' " onmouseleave="this.className = 'fa fa-times'" th:href="@{/notebook/changeDoneToTrue(id=${note.id})}" > </a> </i>
+                <i th:if="${note.done} == false" class="fa fa-times" style="..."></i>
                 <i th:if="${note.done} == true" class="fa fa-check" style="..."></i>
 
             </td>

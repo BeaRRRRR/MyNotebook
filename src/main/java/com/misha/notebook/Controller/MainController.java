@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/notebook")
@@ -23,7 +24,7 @@ public class MainController {
     @Autowired
     private NoteServiceImpl noteService;
 
-    private String sortMethod = "";
+    private String sortMethod = "",filterMethod = "";
     private int pageSize = 30,currentPage = 0;
 
 
@@ -47,9 +48,11 @@ public class MainController {
                        @RequestParam(value = "currentpage",required = false) Integer currentPage){
         if(pageSize!=null) this.pageSize = pageSize;
         if (currentPage!=null) this.currentPage = currentPage;;
-
-        model.addAttribute("notes",sort(sortMethod));
+        List<Note> notes = sort(this.filterMethod,this.sortMethod);
+        boolean isActive = notes.size()-(this.pageSize*(this.currentPage+1)) >= 0;
+        model.addAttribute("notes",notes);
         model.addAttribute("currentPage",currentPage);
+        model.addAttribute("isActive",isActive);
         return "index";
     }
 
@@ -79,22 +82,42 @@ public class MainController {
     }
 
     @RequestMapping(value = "/sort",method = RequestMethod.GET)
-    public String getSortMethod(@RequestParam String method){
-        sortMethod = method;
+    public String getSortMethod(@RequestParam (value = "filter_method",required = false) String filterMethod,
+                                @RequestParam (value = "sort_method",required = false) String sortMethod){
+        if(sortMethod!=null) {
+            this.sortMethod = sortMethod;
+        }
+        if (filterMethod!=null) {
+            this.filterMethod = filterMethod;
+        }
         return "redirect:/notebook";
     }
 
-    public List<Note> sort(String sortMethod){
+    public List<Note> sort(String filterMethod , String sortMethod){
         noteService.setCurrentPage(currentPage);
         noteService.setPageSize(pageSize);
-        switch (sortMethod){
-            case "Date_ASC" : return noteService.findAllOrderByDateAsc();
-            case "Date_DESC" : return noteService.findAllOrderByDateDesc();
-            case "Done" : return noteService.findByDone(true);
-            case "Not_Done" : return noteService.findByDone(false);
+        List<Note> list;
 
-            default: return noteService.findAllOrderByDateAsc();
+        switch(sortMethod) {
+            case "Date_ASC":
+                 list = noteService.findAllOrderByDateAsc();
+                 break;
+            case "Date_DESC":
+                 list = noteService.findAllOrderByDateDesc();
+                 break;
+
+            default: list =  noteService.findAllOrderByDateAsc();
         }
+
+        switch (filterMethod){
+            case "All" : return noteService.findAllOrderByDateAsc();
+            case "Done" :  return list.stream().filter((p) -> p.isDone()).collect(Collectors.toList());
+            case "Not_Done" : return list.stream().filter((p) -> !p.isDone()).collect(Collectors.toList());
+
+            default : return noteService.findAllOrderByDateAsc();
+
+        }
+
 
     }
 
