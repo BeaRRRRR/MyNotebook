@@ -53,11 +53,11 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public List<Note> findByDone(boolean done) {
+    public List<Note> findByDone(boolean done,Sort sort) {
         if (done){
-            return noteRepository.findByDoneIsTrue(new PageRequest(currentPage,pageSize));
+            return noteRepository.findByDoneIsTrue(new PageRequest(currentPage,pageSize,sort));
         }
-        return noteRepository.findByDoneIsFalse(new PageRequest(currentPage,pageSize));
+        return noteRepository.findByDoneIsFalse(new PageRequest(currentPage,pageSize,sort));
     }
 
     @Override

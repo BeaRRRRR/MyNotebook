@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,7 @@ public class MainController {
             this.currentPage = 0;
         }
         List<Note> notes = sort(this.filterMethod,this.sortMethod);
-        boolean isActive = noteService.findAll().size()-(this.pageSize*(this.currentPage+1)) > 0;
+        boolean isActive = findAllWithFilter().size() - (this.pageSize*(this.currentPage+1)) > 0;
         model.addAttribute("notes",notes);
         model.addAttribute("currentPage",this.currentPage);
         model.addAttribute("isActive",isActive);
@@ -62,7 +63,7 @@ public class MainController {
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public String deleteNote(@RequestParam Long id){
         noteService.deleteNote(id);
-        if(noteService.findAll().size()-(this.pageSize*(this.currentPage+1)) <= 0) this.currentPage=this.currentPage-1;
+        if(findAllWithFilter().size()-(this.pageSize*(this.currentPage+1)) <= 0) this.currentPage=this.currentPage-1;
         return "redirect:/notebook?currentpage=" + this.currentPage;
     }
 
@@ -101,30 +102,62 @@ public class MainController {
     public List<Note> sort(String filterMethod , String sortMethod){
         noteService.setCurrentPage(currentPage);
         noteService.setPageSize(pageSize);
-        List<Note> list;
-
-        switch(sortMethod) {
-            case "Date_ASC":
-                 list = noteService.findAllOrderByDateAsc();
-                 break;
-            case "Date_DESC":
-                 list = noteService.findAllOrderByDateDesc();
-                 break;
-
-            default: list =  noteService.findAllOrderByDateAsc();
-        }
 
         switch (filterMethod){
-            case "All" : return list;
-            case "Done" :  return list.stream().filter((p) -> p.isDone()).collect(Collectors.toList());
-            case "Not_Done" : return list.stream().filter((p) -> !p.isDone()).collect(Collectors.toList());
+            case "Done" :
+                switch(sortMethod) {
+                    case "Date_ASC":
+                        return noteService.findByDone(true,new Sort(Sort.Direction.ASC,"date"));
+                    case "Date_DESC":
+                        return  noteService.findByDone(true,new Sort(Sort.Direction.DESC,"date"));
 
-            default : return list;
+
+                    default: return noteService.findByDone(true,new Sort(Sort.Direction.ASC,"date"));
+                }
+            case "Not_Done" :
+                switch(sortMethod) {
+                    case "Date_ASC":
+                        return noteService.findByDone(false,new Sort(Sort.Direction.ASC,"date"));
+                    case "Date_DESC":
+                        return  noteService.findByDone(false,new Sort(Sort.Direction.DESC,"date"));
+
+
+                    default: return noteService.findByDone(false,new Sort(Sort.Direction.ASC,"date"));
+                }
+
+
+            case "All":
+            default :
+                switch(sortMethod) {
+                    case "Date_ASC":
+                        return noteService.findAllOrderByDateAsc();
+                    case "Date_DESC":
+                        return noteService.findAllOrderByDateDesc();
+
+
+                    default: return noteService.findAllOrderByDateAsc();
+                }
 
         }
 
-
     }
+
+    public List<Note> findAllWithFilter(){
+        if (this.filterMethod.equals("All")) {
+            return noteService.findAll();
+        }
+        else if (this.filterMethod.equals("Done")){
+            return  noteService.findAll().stream().filter((e) -> e.isDone()).collect(Collectors.toList());
+        }
+        else if (this.filterMethod.equals("Not_Done")){
+            return  noteService.findAll().stream().filter((e) -> e.isDone()).collect(Collectors.toList());
+        }
+        else {
+            return noteService.findAll();
+        }
+    }
+
+
 
 
 }
