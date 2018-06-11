@@ -8,7 +8,7 @@ CREATE TABLE note(
   message VARCHAR(255) NOT NULL,
   note_date TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   is_done BOOLEAN NOT NULL DEFAULT false,
-PRIMARY KEY(id)
+  PRIMARY KEY(id)
 );
 
 INSERT INTO Note(message,note_date,is_done) VALUES ('Note 1','2018-01-03 10:26:09',TRUE);

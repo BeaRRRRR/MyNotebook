@@ -32,8 +32,8 @@ public class MainController {
 
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
-    public ModelAndView getAddForm(){
-        return new ModelAndView("add");
+    public String getAddForm(){
+        return "add";
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST)
@@ -49,7 +49,7 @@ public class MainController {
                        @RequestParam(value = "currentpage",required = false) Integer currentPage){
         if(pageSize!=null) this.pageSize = pageSize;
         if (currentPage!=null) this.currentPage = currentPage;
-        if(noteService.findAll().size()<(this.pageSize*this.currentPage)) {
+        if(findAllWithFilter().size()<(this.pageSize*this.currentPage)) {
             this.currentPage = 0;
         }
         List<Note> notes = sort(this.filterMethod,this.sortMethod);
@@ -63,7 +63,7 @@ public class MainController {
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public String deleteNote(@RequestParam Long id){
         noteService.deleteNote(id);
-        if(findAllWithFilter().size()-(this.pageSize*(this.currentPage+1)) <= 0) this.currentPage=this.currentPage-1;
+        if(findAllWithFilter().size()-(this.pageSize*(this.currentPage)) <= 0) this.currentPage=this.currentPage-1;
         return "redirect:/notebook?currentpage=" + this.currentPage;
     }
 
