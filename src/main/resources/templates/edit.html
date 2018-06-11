@@ -13,10 +13,11 @@
     <form th:action="@{/notebook/edit}" method="post">
         <div class="form-group col-xs-3">
             <label for="message"> Новое сообщение : </label>
-            <input type="text" name = "message" id="message" class="form-control" th:value="*{oldMessage}"/>
-            <input type="hidden" name="id" th:name="id" th:value="*{id}"/>
+            <input type="text" name = "message" id="message" class="form-control" th:value="${oldMessage}"/>
+            <input type="hidden" name="id" th:name="id" th:value="${id}"/>
             <label for="done"> Выполненно? </label>
-            <input type="checkbox" name="done" id="done"/>
+            <input th:if="${isDone}" type="checkbox" name="done" id="done" checked/>
+            <input th:unless="${isDone}" type="checkbox" name="done" id="done"/>
             <div>
                 <button type="submit" class="btn btn-outline-success">Сохранить изменения</button>
             </div>

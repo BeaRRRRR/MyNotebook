@@ -47,11 +47,14 @@ public class MainController {
     public String list(Model model,@RequestParam(value = "pagesize",required = false) Integer pageSize,
                        @RequestParam(value = "currentpage",required = false) Integer currentPage){
         if(pageSize!=null) this.pageSize = pageSize;
-        if (currentPage!=null) this.currentPage = currentPage;;
+        if (currentPage!=null) this.currentPage = currentPage;
+        if(noteService.findAll().size()<(this.pageSize*this.currentPage)) {
+            this.currentPage = 0;
+        }
         List<Note> notes = sort(this.filterMethod,this.sortMethod);
-        boolean isActive = notes.size()-this.pageSize >= 0;
+        boolean isActive = noteService.findAll().size()-(this.pageSize*(this.currentPage+1)) > 0;
         model.addAttribute("notes",notes);
-        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("currentPage",this.currentPage);
         model.addAttribute("isActive",isActive);
         return "index";
     }
@@ -59,7 +62,8 @@ public class MainController {
     @RequestMapping(value = "/delete",method = RequestMethod.GET)
     public String deleteNote(@RequestParam Long id){
         noteService.deleteNote(id);
-        return "redirect:/notebook";
+        if(noteService.findAll().size()-(this.pageSize*(this.currentPage+1)) <= 0) this.currentPage=this.currentPage-1;
+        return "redirect:/notebook?currentpage=" + this.currentPage;
     }
 
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
@@ -78,6 +82,7 @@ public class MainController {
     public String getEditForm(@RequestParam Long id,Model model){
         model.addAttribute("id",id);
         model.addAttribute("oldMessage",noteService.getNoteById(id).getMessage());
+        model.addAttribute("isDone",noteService.getNoteById(id).isDone());
         return "edit";
     }
 
@@ -110,22 +115,17 @@ public class MainController {
         }
 
         switch (filterMethod){
-            case "All" : return noteService.findAllOrderByDateAsc();
+            case "All" : return list;
             case "Done" :  return list.stream().filter((p) -> p.isDone()).collect(Collectors.toList());
             case "Not_Done" : return list.stream().filter((p) -> !p.isDone()).collect(Collectors.toList());
 
-            default : return noteService.findAllOrderByDateAsc();
+            default : return list;
 
         }
 
 
     }
 
-    @RequestMapping(value = "/changeDoneToTrue",method = RequestMethod.GET)
-    public String changeDoneToTrue(@RequestParam Long id){
-        noteService.getNoteById(id).setDone(true);
-        return "redirect:/notebook";
-    }
 
 }
 

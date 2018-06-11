@@ -15,4 +15,5 @@ public interface NoteService {
     List<Note> findAllOrderByDateAsc();
     List<Note> findByDone(boolean done);
     List<Note> findAllOrderByDateDesc();
+    List<Note> findAll();
 }

@@ -104,23 +104,7 @@
 
 
 
-            <div th:if="${currentPage}==null ">
-                <ul class="pagination">
-                    <li  class="page-item disabled">
-                        <a  class="page-link" >Предыдущая</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" th:text="${0}"></a>
-                    </li>
-                    <li th:if= "${isActive}" class="page-item">
-                        <a class="page-link" th:href="@{/notebook(currentpage=(1))}">Следущая</a>
-                    </li>
-                    <li th:unless= "${isActive}" class="page-item disabled">
-                        <a class="page-link" th:href="@{/notebook(currentpage=(1))}">Следущая</a>
-                    </li>
-                </ul>
 
-            </div>
 
 
 

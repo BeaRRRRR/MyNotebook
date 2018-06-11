@@ -15,5 +15,6 @@ public interface NoteRepository extends PagingAndSortingRepository<Note,Long> {
 
     List<Note> findByDoneIsFalse(Pageable pageable);
     List<Note> findByDoneIsTrue(Pageable pageable);
+    List<Note> findAll();
 
 }

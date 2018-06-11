@@ -65,6 +65,8 @@ public class NoteServiceImpl implements NoteService{
         return noteRepository.findAll(new PageRequest(currentPage,pageSize, new Sort(Sort.Direction.DESC,"date"))).getContent();
     }
 
-
-
+    @Override
+    public List<Note> findAll() {
+        return noteRepository.findAll();
+    }
 }
