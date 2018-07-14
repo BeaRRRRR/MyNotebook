@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "note",schema = "test")
+@Table(name = "note", schema = "test")
 public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
